@@ -43,12 +43,12 @@
     gitlab_prj: "{{ gitlab_repo_name }}"
     gitlab_prj_namespace_id: "{{ gitlab_group_id }}"
 
-- set_fact:
-    include_dashboard_value_file: "{{ role_path }}/templates/apps-dashboard.yml.j2"
+# - set_fact:
+#     include_dashboard_value_file: "{{ role_path }}/templates/apps-dashboard.yml.j2"
 
-- include_role:
-    name: dashboard
-    tasks_from: template-values-file
+# - include_role:
+#     name: dashboard
+#     tasks_from: template-values-file
 
 - include_role:
     name: dashboard
