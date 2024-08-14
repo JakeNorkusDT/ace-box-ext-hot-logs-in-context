@@ -51,7 +51,7 @@
 - set_fact:
     dt_hot_gitlab_repo_src: "{{ role_path }}/files/repos/hot/logs-in-context"
 
-- name: Publish docs
+- name: Publish repo
   include_role:
     name: repository
   vars:
@@ -61,6 +61,22 @@
     git_remote: "gitlab"
     git_org: "{{ gitlab_group }}"
     git_repo: "{{ gitlab_repo_name }}"
+    repo_src: "{{ dt_hot_gitlab_repo_src }}"
+    track_upstream: true
+
+- set_fact:
+    dt_hot_gitlab_docs_src: "{{ role_path }}/files/docs"
+
+- name: Publish docs
+  include_role:
+    name: repository
+  vars:
+    git_username: "root"
+    git_password: "{{ gitlab_password }}"
+    git_domain: "{{ gitlab_domain }}"
+    git_remote: "gitlab"
+    git_org: "{{ gitlab_group }}"
+    git_repo: "docs"
     repo_src: "{{ dt_hot_gitlab_repo_src }}"
     track_upstream: true
 
