@@ -77,7 +77,7 @@
     git_remote: "gitlab"
     git_org: "{{ gitlab_group }}"
     git_repo: "docs"
-    repo_src: "{{ dt_hot_gitlab_repo_src }}"
+    repo_src: "{{ dt_hot_gitlab_docs_src }}"
     track_upstream: true
 
 # - set_fact:
