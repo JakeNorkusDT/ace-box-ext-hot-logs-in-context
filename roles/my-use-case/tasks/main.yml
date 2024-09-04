@@ -35,6 +35,14 @@
     - set_fact:
         dt_oauth_access_token: "{{ auth_response_raw.json.access_token }}"
 
+- name: "Apply OpenPipeline Configuration"
+  ansible.builtin.command: 'curl --location "{{ extra_vars.dt_environment_url_gen3 }}/platform/openpipeline/v1/configurations/logs"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path }}/files/openpipeline/config.json" '
+  register: post_result
+
+- name: Print return information from the previous task
+  ansible.builtin.debug:
+    var: post_result.status
+
 - include_role:
     name: monaco-v2
 
@@ -43,21 +51,13 @@
     name: monaco-v2
     tasks_from: apply-monaco
   vars:
-    monaco_manifest_path: "{{ role_path_abs }}/files/monaco/manifest.yaml"
+    monaco_manifest_path: "{{ role_path }}/files/monaco/manifest.yaml"
     monaco_project: "global"
     monaco_environment:
       DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3 }}"
       DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id }}"
       DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
       DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint.rstrip('/') }}"
-
-- name: "Apply OpenPipeline Configuration"
-  ansible.builtin.command: 'curl --location "{{ extra_vars.dt_environment_url_gen3 }}/platform/openpipeline/v1/configurations/logs"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path }}/files/openpipeline/config.json" '
-  register: post_result
-
-- name: Print return information from the previous task
-  ansible.builtin.debug:
-    var: post_result.status
 
 - include_role:
     name: microk8s
