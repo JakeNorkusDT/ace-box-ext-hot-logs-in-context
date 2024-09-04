@@ -1,4 +1,8 @@
 ---
+
+- name: Fix Gitlab Installer Timeout
+  ansible.builtin.command: 'sed -i "s/15m/30m/g" /home/ace/.ansible/collections/ansible_collections/ace_box/ace_box/roles/gitlab/tasks/main.yml'
+
 - name: Create Issue Script
   copy:
     mode: +x
