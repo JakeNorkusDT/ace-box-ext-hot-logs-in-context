@@ -61,6 +61,8 @@
       DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id }}"
       DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
       DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint.rstrip('/') }}"
+      DT_TENANT: "{{ dynatrace_tenant_url }}"
+      DT_API_TOKEN: "{{ dynatrace_api_token }}"
 
 - include_role:
     name: microk8s
