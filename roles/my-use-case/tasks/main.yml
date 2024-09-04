@@ -43,6 +43,9 @@
   ansible.builtin.debug:
     var: post_result.status
 
+- set_fact:
+    role_path_abs: "{{ role_path }}"
+
 - include_role:
     name: monaco-v2
 
@@ -51,7 +54,7 @@
     name: monaco-v2
     tasks_from: apply-monaco
   vars:
-    monaco_manifest_path: "{{ role_path }}/files/monaco/manifest.yaml"
+    monaco_manifest_path: "{{ role_path_abs }}/files/monaco/manifest.yaml"
     monaco_project: "global"
     monaco_environment:
       DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3 }}"
