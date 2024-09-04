@@ -15,6 +15,34 @@
       #!/bin/sh
       microk8s kubectl patch deployment unguard-user-auth-service -n unguard -p '{"spec":{"template":{"spec":{"containers":[{"name":"user-auth-service","image":"dynatraceace/unguard-user-auth-service:0.6.2"}]}}}}'
 
+#Generate OAuth Token
+- block:
+    - name: Request a DT OAuth access token
+      ansible.builtin.uri:
+        url: "{{ extra_vars.dt_oauth_sso_endpoint }}"
+        method: POST
+        status_code: 200
+        headers:
+          Content-Type: "application/x-www-form-urlencoded"
+        body_format: form-urlencoded
+        body:
+          grant_type: "client_credentials"
+          client_id: "{{ extra_vars.dt_oauth_client_id }}"
+          client_secret: "{{ extra_vars.dt_oauth_client_secret }}"
+          scope: "openpipeline:configurations:write openpipeline:configurations:read"
+          resource: "{{ extra_vars.dt_oauth_account_urn }}"
+      register: auth_response_raw
+    - set_fact:
+        dt_oauth_access_token: "{{ auth_response_raw.json.access_token }}"
+
+- name: "Apply OpenPipeline Configuration"
+  ansible.builtin.command: 'curl --location "{{ url_base }}/platform/openpipeline/v1/configurations/logs"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path }}/files/openpipeline/config.json" '
+  register: post_result
+
+- name: Print return information from the previous task
+  ansible.builtin.debug:
+    var: post_result.status
+
 - include_role:
     name: microk8s
 
