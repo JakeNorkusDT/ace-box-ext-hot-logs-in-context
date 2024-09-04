@@ -50,7 +50,6 @@
       DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id }}"
       DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
       DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint.rstrip('/') }}"
-      DT_API_TOKEN: "{{ dt_api_token }}"
 
 - name: "Apply OpenPipeline Configuration"
   ansible.builtin.command: 'curl --location "{{ extra_vars.dt_environment_url_gen3 }}/platform/openpipeline/v1/configurations/logs"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path }}/files/openpipeline/config.json" '
