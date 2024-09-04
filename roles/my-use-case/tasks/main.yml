@@ -1,4 +1,20 @@
 ---
+- name: Create Issue Script
+  copy:
+    mode: +x
+    dest: "/home/{{ ace_box_user }}/start_issue.sh"
+    content: |
+      #!/bin/sh
+      microk8s kubectl patch deployment unguard-user-auth-service -n unguard -p '{"spec":{"template":{"spec":{"containers":[{"name":"user-auth-service","image":"europe-west4-docker.pkg.dev/acetaskforceemea/newregistry/user-auth-service-innovate:1.0.16"}]}}}}'
+
+- name: Resolve Issue Script
+  copy:
+    mode: +x
+    dest: "/home/{{ ace_box_user }}/resolve_issue.sh"
+    content: |
+      #!/bin/sh
+      microk8s kubectl patch deployment unguard-user-auth-service -n unguard -p '{"spec":{"template":{"spec":{"containers":[{"name":"user-auth-service","image":"dynatraceace/unguard-user-auth-service:0.6.2"}]}}}}'
+
 - include_role:
     name: microk8s
 
