@@ -1,0 +1,10 @@
+---
+configs:
+  - id: allowedOutboundConnectionsDisabled
+    config:
+      name: allowed-outbound-connections
+      template: allowed-outbound-connections.json
+    type:
+      settings:
+        schema: builtin:dt-javascript-runtime.allowed-outbound-connections
+        scope: environment
