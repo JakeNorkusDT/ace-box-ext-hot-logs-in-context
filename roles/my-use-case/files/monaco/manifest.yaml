@@ -10,7 +10,7 @@ environmentGroups:
   - name: acebox
     url:
       type: environment
-      value: DT_TENANT
+      value: DT_PLATFORM_TENANT_URL
     auth:
       token:
         type: environment
