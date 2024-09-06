@@ -33,7 +33,7 @@
           grant_type: "client_credentials"
           client_id: "{{ extra_vars.dt_oauth_client_id }}"
           client_secret: "{{ extra_vars.dt_oauth_client_secret }}"
-          scope: "openpipeline:configurations:write openpipeline:configurations:read"
+          scope: "openpipeline:configurations:write openpipeline:configurations:read app-engine:apps:install app-engine:apps:run hub:catalog:read"
           resource: "{{ extra_vars.dt_oauth_account_urn }}"
       register: auth_response_raw
     - set_fact:
@@ -47,16 +47,13 @@
   ansible.builtin.debug:
     var: post_result.status
 
-- include_role:
-    name: dt-platform
-    tasks_from: ensure-app
-  vars:
-    dt_app_id: "{{ item.dt_app_id }}"
-    dt_environment_url_gen3: "{{ extra_vars.dt_environment_url_gen3 }}"
-    dt_oauth_sso_endpoint: "{{ extra_vars.dt_oauth_sso_endpoint }}"
-    dt_oauth_client_id: "{{ extra_vars.dt_oauth_client_id }}"
-    dt_oauth_client_secret: "{{ extra_vars.dt_oauth_client_secret }}"
-    dt_oauth_account_urn: "{{ extra_vars.dt_oauth_account_urn }}"
+- name: "Install app {{ item.dt_app_id }}"
+  ansible.builtin.uri:
+    url: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') }}/platform/app-engine/registry/v1/apps/{{ item.dt_app_id }}:install-bundle"
+    method: POST
+    status_code: 202
+    headers:
+      Authorization: "Bearer {{ dt_oauth_access_token }}"
   loop:
     - dt_app_id: "dynatrace.gitlab.connector"
       dt_app_version: "1.0.0"
