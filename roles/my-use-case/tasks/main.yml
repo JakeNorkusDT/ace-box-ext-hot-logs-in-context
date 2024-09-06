@@ -42,7 +42,7 @@
     role_path_abs: "{{ role_path }}"
 
 - name: "Apply OpenPipeline Configuration"
-  ansible.builtin.command: 'curl "{{ extra_vars.dt_environment_url_gen3.rstrip('/') }}/platform/openpipeline/v1/configurations/logs"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/openpipeline/config.json" '
+  ansible.builtin.command: 'curl "{{ extra_vars.dt_environment_url_gen3') }}/platform/openpipeline/v1/configurations/logs"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/openpipeline/config.json" '
   register: post_result
 
 - name: Print return information from the previous task result
