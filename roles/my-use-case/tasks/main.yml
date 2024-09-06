@@ -1,7 +1,7 @@
 ---
 
 - name: Fix Gitlab Installer Timeout
-  ansible.builtin.command: 'sed -i "s/15m/30m/g" /home/{{ ace_box_user }}/.ansible/collections/ansible_collections/ace_box/ace_box/roles/gitlab/tasks/main.yml'
+  ansible.builtin.command: 'sed -i "s/15m/59m/g" /home/{{ ace_box_user }}/.ansible/collections/ansible_collections/ace_box/ace_box/roles/gitlab/tasks/main.yml'
 
 - name: Create Issue Script
   copy:
@@ -46,6 +46,20 @@
 - name: Print return information from the previous task
   ansible.builtin.debug:
     var: post_result.status
+
+- include_role:
+    name: dt-platform
+    tasks_from: ensure-app
+  vars:
+    dt_app_id: "{{ item.dt_app_id }}"
+    dt_environment_url_gen3: "{{ extra_vars.dt_environment_url_gen3 }}"
+    dt_oauth_sso_endpoint: "{{ extra_vars.dt_oauth_sso_endpoint }}"
+    dt_oauth_client_id: "{{ extra_vars.dt_oauth_client_id }}"
+    dt_oauth_client_secret: "{{ extra_vars.dt_oauth_client_secret }}"
+    dt_oauth_account_urn: "{{ extra_vars.dt_oauth_account_urn }}"
+  loop:
+    - dt_app_id: "dynatrace.gitlab.connector"
+      dt_app_version: "1.0.0"
 
 - set_fact:
     role_path_abs: "{{ role_path }}"
