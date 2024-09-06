@@ -8,3 +8,11 @@ configs:
       settings:
         schema: builtin:dt-javascript-runtime.allowed-outbound-connections
         scope: environment
+  - id: ingestAllLogs
+    config:
+      name: logs-ingest
+      template: log.json
+    type:
+      settings:
+        schema: builtin:logmonitoring.log-storage-settings
+        scope: environment
