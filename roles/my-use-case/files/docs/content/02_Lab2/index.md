@@ -1,4 +1,4 @@
-## Lab 2: Bridging Observability Gaps. 
+## Lab 2: Bridging Observability Gaps
  
 ### What will this lab focus on? 
 

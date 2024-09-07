@@ -1,4 +1,4 @@
-## Lab4: Security Use Case. 
+## Lab4: Security Use Case
  
 ### Preparation/Context 
  

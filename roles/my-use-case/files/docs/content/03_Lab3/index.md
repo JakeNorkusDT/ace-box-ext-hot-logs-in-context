@@ -1,4 +1,4 @@
-## Lab 3: Business Use Case. 
+## Lab 3: Business Use Case
  
 ### What will this lab focus on? 
 In this lab we’ll use the App “*Easytrade*”, which is a trading platform App where people can buy, sell, transfer and withdraw funds. We will demonstrate for you how *Easytrade* works and the importance of observing the App to see how much money is being traded (stock market never closes here). We’ll also show you how to find logs via *Notebooks* of trades and complete an exercise in data analysis to build a business dashboard.  
@@ -62,7 +62,7 @@ fetch logs
 
 Now that we have our data selected and prepared for analysis, it’s time to review the data to answer our prescribed business-level questions.
 
-Let's answer the first question - *How many deposits were made in the last two hours?*
+Let's answer the first question: **How many deposits were made in the last two hours?**
 
 To achieve this we need to filter the data for the deposit action and count the number of entries for the last two hours
 
@@ -71,8 +71,9 @@ To achieve this we need to filter the data for the deposit action and count the 
 
 ![Summarize by Action Type](../../assets/images/SummarizeByActionType.png)
 
-With that, we have answered the first question, and know how many deposits were made in the last 2 hours
-Let's move to the next question - *How many withdrawals were made in the last two hours?*  
+With that, we have answered the first question, and know how many deposits were made in the last 2 hours.
+
+Let's move to the next question: **How many withdrawals were made in the last two hours?**
 
 10.	Let's proceed by duplicating **the current section** where we have the data for deposits.  
 
@@ -91,7 +92,7 @@ fetch logs
 ```
 ![Withdrawal Version](../../assets/images/WithdrawalsSummarization.png)
 
-Let’s answer the third question - *How much money is our platform earning?*
+Let’s answer the third question: **How much money is our platform earning?**
 
 We know that the business makes money through the transaction fee and the *actionType* related to it is “**collectfee**”. Therefore we need to filter and summarize data related to this action.
 
@@ -112,7 +113,7 @@ fetch logs
  
 Now we know that the business is making profit and how much money was earned in the last 2 hours
 
-Let’s answer the fourth question - *Which account had the biggest increase / decrease?*
+Let’s answer the fourth question: **Which account had the biggest increase / decrease?**
 
 To achieve this, we will track the *valueChange* corresponding to the *accountId* and order the resulting data in descending order.
 
@@ -133,7 +134,7 @@ fetch logs
 
 Now we can the list of accounts that had the biggest change in their balance.
 
-Let’s answer the fifth question - **Can we predict future earnings of our platform?**
+Let’s answer the fifth question: **Can we predict future earnings of our platform?**
 
 To achieve this, we need to create a *timeseries* of our *current earnings* and use this data to *forecast* future earnings.
 
@@ -226,7 +227,7 @@ fetch logs
 
 ![Pie Chart Color Change](../../assets/images/PieChartColors.png)
 
-Our final question to answer - *How much money is deposited vs withdrawn?*
+Our final question to answer: **How much money is deposited vs withdrawn?**
 
 22.	Just as with each section, duplicate our very **first section** and hit “**Run**”. Now we need to edit the query and filter for actionType “**withdrawal**” or “**deposit**”. Once we have filtered the data, the next step is to create a **timesries**. Do this by click **valueChange** column and “**convert to timeseries**” 
 
