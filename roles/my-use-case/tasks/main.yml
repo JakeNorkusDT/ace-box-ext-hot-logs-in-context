@@ -63,6 +63,8 @@
   loop:
     - dt_app_id: "dynatrace.gitlab.connector"
       dt_app_version: "1.0.0"
+    - dt_app_id: "dynatrace.davis.problems"
+      dt_app_Version: "1.3.1"
 
 - include_role:
     name: gitlab
