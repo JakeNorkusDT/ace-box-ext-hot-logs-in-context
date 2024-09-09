@@ -102,11 +102,6 @@
     name: microk8s
 
 - include_role:
-    name: dt-activegate-classic
-  vars:
-    activegate_install_synthetic: true
-
-- include_role:
     name: dt-operator
 
 - include_role:
@@ -151,6 +146,16 @@
   include_role:
     name: gitlab
     tasks_from: source-endpoints
+
+- name: Source Gitlab Secrets
+  include_role:
+    name: gitlab
+    tasks_from: source-secret
+  when: gitlab_personal_access_token is not defined
+
+- name: Print return information from the previous task result
+  ansible.builtin.debug:
+    var: gitlab_personal_access_token
 
 - set_fact:
     dt_hot_gitlab_repo_src: "{{ role_path }}/files/repos/hot/logs-in-context"
