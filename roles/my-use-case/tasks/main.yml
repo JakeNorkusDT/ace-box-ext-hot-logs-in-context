@@ -109,6 +109,10 @@
     name: gitlab
     tasks_from: source-endpoints
 
+- name: Print return information from the previous task result
+  ansible.builtin.debug:
+    var: gitlab_internal_endpoint
+
 - name: Source Gitlab Secrets
   include_role:
     name: gitlab
@@ -118,6 +122,14 @@
 - name: Print return information from the previous task result
   ansible.builtin.debug:
     var: gitlab_personal_access_token
+
+- include_role:
+    name: gitlab
+    tasks_from: source-endpoints-external
+
+- name: Print return information from the previous task result
+  ansible.builtin.debug:
+    var: gitlab_external_endpoint
 
 - set_fact:
     dt_hot_gitlab_repo_src: "{{ role_path }}/files/repos/hot/logs-in-context"
