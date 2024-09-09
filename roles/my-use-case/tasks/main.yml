@@ -67,6 +67,17 @@
       dt_app_Version: "1.3.1"
 
 - include_role:
+    name: microk8s
+
+- include_role:
+    name: dt-operator
+
+- include_role:
+    name: monaco-v2
+  vars:
+    monaco_version: "v{{ monacoVersion }}"
+
+- include_role:
     name: gitlab
   vars:
     gitlab_helm_chart_version: "v7.10.0"
@@ -175,17 +186,6 @@
       DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint.rstrip('/') }}"
       DT_TENANT: "{{ dynatrace_tenant_url }}"
       DT_API_TOKEN: "{{ dynatrace_api_token }}"
-
-- include_role:
-    name: microk8s
-
-- include_role:
-    name: dt-operator
-
-- include_role:
-    name: monaco-v2
-  vars:
-    monaco_version: "v{{ monacoVersion }}"
     
 - include_role:
     name: app-easytrade
