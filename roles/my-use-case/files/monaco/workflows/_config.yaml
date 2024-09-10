@@ -9,6 +9,9 @@ configs:
         actor_id:
           type: environment
           name: WORKFLOW_ACTOR_ID
+        easyTradeAddress:
+          type: environment
+          name: EASYTRADE_ADDRESS
     type:
       automation:
         resource: workflow
