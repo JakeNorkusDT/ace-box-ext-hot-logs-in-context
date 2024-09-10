@@ -71,7 +71,8 @@ An easy way is by searching log records with text filters. Let’s modify our qu
 
 ```DQL
 fetch logs 
-| filter k8s.namespace.name == "easytrade" 
+| filter k8s.namespace.name == "easytrade"
+| filter k8s.deployment.name == "brokerservice-*" 
 | filter contains(content, "withdraw", caseSensitive:false) 
 ```
 

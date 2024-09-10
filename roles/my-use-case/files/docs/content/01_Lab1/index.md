@@ -36,7 +36,7 @@ There are multiple apps at your disposal for viewing/analyzing logs. For initial
 
 We can now see *all* the logs that were generated in the last two hours. But we want to narrow it down to investigate our problem and show only relevant logs. 
 
-4. To filter the result, click on **status** and select “**error**”. This will filter logs with errors.
+4. To filter the result, click on **status** and select “**ERROR**”. This will filter logs with errors.
 5.	Further, use the content box to filter for all logs related to **login**. You can do this simply by typing “**login**” for the option “**contains**”
 6. Now click on **Run Query** for these filters to be applied. *Remember*, the filtering options will not be applied automatically. After every change you have to click “*run query*” for the changes to be applied.
 

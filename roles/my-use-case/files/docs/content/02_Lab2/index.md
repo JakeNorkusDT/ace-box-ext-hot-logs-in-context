@@ -30,7 +30,7 @@ Now we have a new section with log data. But we want to look at the specific log
 
 We can add additional filters for *jobid* or other parameters by simply clicking on those fields and adding it to the filter as we saw in the last lab
 
-5. Next, we want to view how many jobs were started and finished in the last 2 hours. To do this simply click on the “**state**” column and click on **summarize**.  
+5. Next, we want to view how many jobs were started and finished in the last 2 hours. To do this simply click on the “**state**” column and click on **Summarize**.  
 
 ![Summarize by State](../../assets/images/SummarizeByState.png)
 
@@ -46,8 +46,6 @@ Next, we will want to view how many jobs were started in different categories. T
 
 ![Filter by State](../../assets/images/FilterByState.png)
 
-This will add a filter bar at the top, but you can see that the logical condition by default is “**OR**”. We need to change this as we want only the jobs that were started. Simply edit this by clicking on it, and replace it with “**AND**” by typing it in.
-
 7. Now that the filters are added click on the “**category**” column and **summarize** as we did in the previous steps. This should give us a summarized result of all jobs that were started in each category for the past two hours.  
 
 ![Summarize by Category](../../assets/images/SummarizeByCategory.png)
@@ -58,7 +56,7 @@ Now let's follow the same process and create a view for all jobs that were finis
 
 ![Duplicate Section](../../assets/images/DuplicateSection.png)
 
-9. Now follow the steps you have learnt to **filter** and **summarize** for *all finished jobs* in each category.
+9. Now follow the steps you have learnt to **filter** and **Summarize** for *all finished jobs* in each category.
 
 This is good data, but wouldn’t it be more useful to understand if all the jobs that were started had successfully finished or if there some issues? We can analyze this and find jobs that were started but not completed, that is they were stuck.
 For this step, we would need to write a couple of DQL queries. To do this open a new section in the notebook and select “**DQL**” this time instead of logs.
@@ -103,7 +101,9 @@ For this example, let's look at all the jobs for the payment category as it is i
 
 This is not very useful or readable in a dashboard format. It would be better if we could simply see the number of jobs that are stuck for the *payment* category. We can achieve this by *summarizing* or *counting* the entries. We can do this by modifying query in the notebook and placing it on the dashboard again or simply editing the query in the dashboard itself.
 
-For this example let us go back to the notebook.
+For this example let us edit our tile by clicking on the pencil menu.
+
+![Edit Dashboard Tile](../../assets/images/EditDashboardTile.png)
 
 4. Simply add the **summarize** command to the existing query to get the count for the stuck jobs  
 
@@ -123,7 +123,7 @@ fetch logs
 
 We can beautify it and make it more readable by changing visualizations and add threshold color coding.
 
-5. Click on the “**options**” button in the top menu and this will open the *visualization options* menu on the right side of the section.  
+5. Click on the “**Visualize**” button in the top menu and this will open the *visualization options* menu on the right side of the section.  
 
 ![Alter Visualization](../../assets/images/Visualization.png)
 
@@ -138,13 +138,11 @@ We can beautify it and make it more readable by changing visualizations and add 
 
 ![Threshold Visualization](../../assets/images/ThesholdVisualization.png)
 
-Now we have a much more readable and insightful tile that can be placed on the Dashboard. Follow the steps you learnt previously, and place this data on the dashboard by selecting the “**open with**” option.
-
 ### Step 3:  Creating an alert for our datapoint
 To create alerts we need to use the “*Workflows*” app.
 
 1. As we have already learned how to open any app, use the search function to find and open “**Workflows**”
-2. Once you open the app create a new workflow by clicking the “**+**” button
+2. Once you open the app create a new workflow by clicking the “**+**” button and give ti the name "**Stuck Payment Job**"
 
 ![Create Workflow](../../assets/images/CreateWorkflow.png)
 
@@ -153,7 +151,7 @@ To create alerts we need to use the “*Workflows*” app.
 
 ![Create DQL Task](../../assets/images/CreateDQLTask.png)
 
-5. In the following panel, select “**Execute DQL Query**” as the action
+5. In the following panel, select “**Execute DQL Query**” as the action and rename it to "**find_stuck_jobs**"
 6. In the input section simply paste the below query. It is essentially the query we used in our notebook
 
 ```DQL
@@ -179,7 +177,7 @@ fetch logs //, from:now() - 7d
 
 ```
 Item variable name: item
-List: find_stuck_jobs.records
+List: {{ result("find_stuck_jobs")["records"] }}
 Concurrency: 5
 ```
 
@@ -187,7 +185,7 @@ Concurrency: 5
 
 Next we need to create a *JS task* that will compare the issues list against the stuck jobs and retrieve all the stuck jobs that do not have an issue created in gitlab.
 
-9.	Add a new task and select “**Run Javascript**” and **paste the below code** in the Input field
+9.	Add a new task and select “**Run Javascript**”, rename it to "**stuck_jobs_without_issues**" and **paste the below code** in the Input field
 
 ```JavaScript
 import {execution} from '@dynatrace-sdk/automation-utils';
@@ -213,14 +211,24 @@ For the final step we will create a new task that will create a new issue in git
 
 10.	Add a new task and select “**Create New Issue**” from the *Gitlab for Workflows* section. In the input section **use the following values**;
 
-![Create New Issue Task](../../assets/images/CreateNewIssueTask.png)
-
 ```
 Project: logs-in-context
-Title: Payment Transaction Stuck for jobid: {{_item}}
+Payment Transaction Stuck for jobid: {{ _.item }}
 Description: The payment needs to be investigated and fixed
 ```
 
-11.	Save the workflow using the “**save**” button at the top of the workflow.
+![Create New Issue Task](../../assets/images/CreateNewIssueTask.png)
+
+11. We need to add an option to check the issues that need to be opened. We can achieve this by creating a loop task in the Options tab. **Use the below configs**;
+
+```
+Item variable name: item
+List: {{ result("stuck_jobs_without_issues") }}
+Concurrency: 5
+```
+
+![Create New Issue Loop Task](../../assets/images/CreateNewIssueLoopTask.png)
+
+12.	Save the workflow using the “**save**” button at the top of the workflow.
 
 Now we have created our alert and all set. Try running the workflow and inspect the results.
