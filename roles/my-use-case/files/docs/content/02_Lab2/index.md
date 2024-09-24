@@ -34,7 +34,7 @@ We can add additional filters for *jobid* or other parameters by simply clicking
 
 ![Summarize by State](../../assets/images/SummarizeByState.png)
 
-Now we see the total number of jobs that were started and finished the past 2 hours
+Now we see the total number of jobs that were started and finished in the past 2 hours
 
 To remove this summary, simply click on the ‘**X**’ button next to the summarize option. You can always remove any filter or modification you add to the analysis by clicking the ‘**X**’ button next to it from the UI without modifying DQL 
 
@@ -101,7 +101,7 @@ For this example, let's look at all the jobs for the payment category as it is i
 
 This is not very useful or readable in a dashboard format. It would be better if we could simply see the number of jobs that are stuck for the *payment* category. We can achieve this by *summarizing* or *counting* the entries. We can do this by modifying query in the notebook and placing it on the dashboard again or simply editing the query in the dashboard itself.
 
-For this example let us edit our tile by clicking on the pencil menu.
+For this example let us edit our tile by clicking on the pencil icon.
 
 ![Edit Dashboard Tile](../../assets/images/EditDashboardTile.png)
 
@@ -142,7 +142,7 @@ We can beautify it and make it more readable by changing visualizations and add 
 To create alerts we need to use the “*Workflows*” app.
 
 1. As we have already learned how to open any app, use the search function to find and open “**Workflows**”
-2. Once you open the app create a new workflow by clicking the “**+**” button and give ti the name "**Stuck Payment Job**"
+2. Once you open the app create a new workflow by clicking the “**+**” button and rename it to "**Stuck Payment Jobs**"
 
 ![Create Workflow](../../assets/images/CreateWorkflow.png)
 
@@ -151,7 +151,7 @@ To create alerts we need to use the “*Workflows*” app.
 
 ![Create DQL Task](../../assets/images/CreateDQLTask.png)
 
-5. In the following panel, select “**Execute DQL Query**” as the action and rename it to "**find_stuck_jobs**"
+5. In the following panel, select “**Execute DQL Query**” as the action and rename it to:  ```find_stuck_jobs```
 6. In the input section simply paste the below query. It is essentially the query we used in our notebook
 
 ```DQL
@@ -185,7 +185,7 @@ Concurrency: 5
 
 Next we need to create a *JS task* that will compare the issues list against the stuck jobs and retrieve all the stuck jobs that do not have an issue created in gitlab.
 
-9.	Add a new task and select “**Run Javascript**”, rename it to "**stuck_jobs_without_issues**" and **paste the below code** in the Input field
+9.	Add a new task and select “**Run Javascript**”, rename it to `stuck_jobs_without_issues` and **paste the below code** in the Input field
 
 ```JavaScript
 import {execution} from '@dynatrace-sdk/automation-utils';
