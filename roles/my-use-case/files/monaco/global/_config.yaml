@@ -16,18 +16,3 @@ configs:
       settings:
         schema: builtin:logmonitoring.log-storage-settings
         scope: environment
-  - id: create Gitlab Connection
-    config:
-      name: gitlab
-      template: gitlab.json
-      parameters:
-        url:
-          type: environment
-          name: GITLAB_URL
-        token:
-          type: environment
-          name: GITLAB_PAT_TOKEN
-    type:
-      settings:
-        schema: app:dynatrace.gitlab.connector:connection
-        scope: environment
