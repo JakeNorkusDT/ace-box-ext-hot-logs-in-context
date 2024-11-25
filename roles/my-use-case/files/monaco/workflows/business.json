@@ -38,7 +38,7 @@
     }
   },
   "description": "",
-  "actor": "ACTOR_ID",
+  "actor": "{{.actor_id}}",
   "ownerType": "USER",
   "isPrivate": false,
   "trigger": {
