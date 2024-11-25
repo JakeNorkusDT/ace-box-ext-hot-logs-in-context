@@ -86,7 +86,7 @@
 
 - name: Set Workflow Variables 2
   shell: |
-    sed -i "s/EASYTRADE_ADDRESS/{{ easytrade_address }}/g" "{{ role_path }}/files/monaco/workflows/security.json"
+    sed -i "s,EASYTRADE_ADDRESS,{{ easytrade_address }},g" "{{ role_path }}/files/monaco/workflows/security.json"
 
 - name: Monaco Debugging 1
   ansible.builtin.debug:
