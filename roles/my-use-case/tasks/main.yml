@@ -1,5 +1,9 @@
 ---
 
+- name: Set Workflow Variables
+  shell: |
+    sed -i "s/ACTOR_ID/{{ extra_vars.workflow_actor_id }}/g" "{{ role_path_abs }}/files/monaco/workflows/*.json"
+
 - name: Create Issue Script
   copy:
     mode: +x
@@ -79,9 +83,6 @@
 - include_role:
     name: app-easytrade
 
-- include_role:
-    name: app-unguard
-
 - name: Monaco Debugging 1
   ansible.builtin.debug:
     var: extra_vars.dt_environment_url_gen3
@@ -96,15 +97,15 @@
     tasks_from: apply-monaco
   vars:
     monaco_manifest_path: "{{ role_path_abs }}/files/monaco/manifest.yaml"
+    monaco_project: "global"
     monaco_environment:
       WORKFLOW_ACTOR_ID: "{{ extra_vars.workflow_actor_id }}"
       EASYTRADE_ADDRESS: "{{ ingress_protocol }}://easytrade.{{ ingress_domain }}"
-      DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3 }}"
-      DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id }}"
-      DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
-      DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint.rstrip('/') }}"
       DT_TENANT: "{{ dynatrace_tenant_url }}"
       DT_API_TOKEN: "{{ dynatrace_api_token }}"
+
+- include_role:
+    name: app-unguard
 
 # - set_fact:
 #     include_dashboard_value_file: "{{ role_path }}/templates/apps-dashboard.yml.j2"
