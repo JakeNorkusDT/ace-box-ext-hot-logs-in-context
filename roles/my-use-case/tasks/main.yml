@@ -100,7 +100,6 @@
     tasks_from: apply-monaco
   vars:
     monaco_manifest_path: "{{ role_path_abs }}/files/monaco/manifest.yaml"
-    monaco_project: "global"
     monaco_environment:
       WORKFLOW_ACTOR_ID: "{{ extra_vars.workflow_actor_id }}"
       EASYTRADE_ADDRESS: "{{ ingress_protocol }}://easytrade.{{ ingress_domain }}"
