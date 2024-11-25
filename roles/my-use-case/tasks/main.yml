@@ -2,7 +2,7 @@
 
 - name: Set Workflow Variables
   shell: |
-    sed -i "s/ACTOR_ID/{{ extra_vars.workflow_actor_id }}/g" "{{ role_path_abs }}/files/monaco/workflows/*.json"
+    sed -i "s/ACTOR_ID/{{ extra_vars.workflow_actor_id }}/g" "{{ role_path }}/files/monaco/workflows/*.json"
 
 - name: Create Issue Script
   copy:
