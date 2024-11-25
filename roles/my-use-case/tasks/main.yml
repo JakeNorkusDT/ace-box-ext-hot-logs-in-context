@@ -74,8 +74,6 @@
 
 - include_role:
     name: monaco-v2
-  vars:
-    monaco_version: "v{{ monacoVersion }}"
 
 - include_role:
     name: app-easytrade
@@ -108,6 +106,10 @@
       EASYTRADE_ADDRESS: "{{ ingress_protocol }}://easytrade.{{ ingress_domain }}"
       DT_TENANT: "{{ dynatrace_tenant_url }}"
       DT_API_TOKEN: "{{ dynatrace_api_token }}"
+      DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3 }}"
+      DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id }}"
+      DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
+      DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint.rstrip('/') }}"
 
 - include_role:
     name: app-unguard
