@@ -77,10 +77,6 @@
   vars:
     monaco_version: "v{{ monacoVersion }}"
 
-
-- include_role:
-    name: monaco-v2
-
 - include_role:
     name: app-easytrade
 
