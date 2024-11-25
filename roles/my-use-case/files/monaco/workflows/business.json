@@ -1,5 +1,5 @@
 {
-  "title": "{{ .name }}",
+  "title": "Lab 2 workflow",
   "tasks": {
     "get_loop_steps": {
       "name": "get_loop_steps",
@@ -38,7 +38,7 @@
     }
   },
   "description": "",
-  "actor": "{{ .actor_id }}",
+  "actor": "ACTOR_ID",
   "ownerType": "USER",
   "isPrivate": false,
   "trigger": {
