@@ -1,5 +1,5 @@
 {
-  "title": "{{ .name }}",
+  "title": "Security Lab Workflow",
   "tasks": {
     "run_javascript_1": {
       "name": "run_javascript_1",
@@ -16,7 +16,7 @@
     }
   },
   "description": "",
-  "actor": "{{ .actor_id }}",
+  "actor": "ACTOR_ID",
   "isPrivate": false,
   "trigger": {},
   "schemaVersion": 3
