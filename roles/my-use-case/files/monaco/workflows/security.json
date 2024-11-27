@@ -16,7 +16,7 @@
     }
   },
   "description": "",
-  "actor": "{{.actor_id}}",
+  "actor": "{{ACTOR_ID}}",
   "isPrivate": false,
   "trigger": {},
   "schemaVersion": 3
