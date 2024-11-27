@@ -2,8 +2,8 @@
 
 - name: Set Workflow Variables 1
   shell: |
-    sed -i "s/{{.actor_id}}/{{ extra_vars.workflow_actor_id }}/g" "{{ role_path }}/files/monaco/workflows/business.json"
-    sed -i "s/{{.actor_id}}/{{ extra_vars.workflow_actor_id }}/g" "{{ role_path }}/files/monaco/workflows/security.json"
+    sed -i "s/{{ACTOR_ID}}/{{ extra_vars.workflow_actor_id }}/g" "{{ role_path }}/files/monaco/workflows/business.json"
+    sed -i "s/{{ACTOR_ID}}/{{ extra_vars.workflow_actor_id }}/g" "{{ role_path }}/files/monaco/workflows/security.json"
 
 #Generate OAuth Token
 - block:
