@@ -22,7 +22,7 @@
       microk8s kubectl patch deployment unguard-user-auth-service -n unguard -p '{"spec":{"template":{"spec":{"containers":[{"name":"user-auth-service","image":"dynatraceace/unguard-user-auth-service:0.6.2"}]}}}}'
 
 - include_role:
-    name: microk8s
+    name: k3s
 
 - include_role:
     name: dt-operator
