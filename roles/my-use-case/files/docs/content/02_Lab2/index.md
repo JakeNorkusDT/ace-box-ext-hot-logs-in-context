@@ -18,21 +18,21 @@ To view and analyze logs in a Notebook, we need to create a new *notebook* for l
 
 ![Logs Section](../../assets/images/LogsSection.png)
 
-Now we have a new section with log data. But we want to look at the specific logs for the unguard service. For this we need to filter down the log data.
+Now we have a new section with log data. But we want to look at the specific logs for the unguard service. Segments are used for initial filtering for the logs we are interested in. 
 
-3. Click on the top filter bar in the section and select **log.source** and use the following value for the filter
+3. Click on the segment icon and select `+ Segment` then choose `Provider` and `Unguard` as the value. Click `Apply` and run the query. This segment will automatically apply a filter to our query for log.source contains "Unguard".
 
 ```log.source = "Unguard Job Service Provider"```
 
-![Log Source Select](../../assets/images/LogSourceSelect.png)
+![Log Source Select](../../assets/images/segmentselection.png)
  
-4. Once we have the filter, let's increase the number of log lines retrieved by increasing the limit. Click on the “**Limit**” box and increase the number from 20 to **200**
+4. Once we have the filter, let's increase the number of log lines retrieved by increasing the limit. Click on the “**Limit**” box and increase the number from 20 to **200**. Click `Run` to refresh the results.
 
 We can add additional filters for *jobid* or other parameters by simply clicking on those fields and adding it to the filter as we saw in the last lab
 
 5. Next, we want to view how many jobs were started and finished in the last 2 hours. To do this simply click on the “**state**” column and click on **Summarize**.  
 
-![Summarize by State](../../assets/images/SummarizeByState.png)
+![Summarize by State](../../assets/images/statesummarize.png)
 
 Now we see the total number of jobs that were started and finished in the past 2 hours
 
@@ -59,15 +59,15 @@ Now let's follow the same process and create a view for all jobs that were finis
 9. Now follow the steps you have learnt to **filter** and **Summarize** for *all finished jobs* in each category.
 
 This is good data, but wouldn’t it be more useful to understand if all the jobs that were started had successfully finished or if there some issues? We can analyze this and find jobs that were started but not completed, that is they were stuck.
-For this step, we would need to write a couple of DQL queries. To do this open a new section in the notebook and select “**DQL**” this time instead of logs.
+For this step, we would need to write a couple of DQL queries. To do this open a new section in the notebook and select “**DQL**” this time instead of logs. The Unguard segment selection should remain active on the new DQL section, ensure that the `Provider: Unguard` segment is active.
 
 10.	In the new section simply copy and paste **the below DQL query**
 
 ```DQL
 fetch logs  
-| filter log.source == "Unguard Job Service Provider" AND state ==  "started" 
+| filter state ==  "started" 
 | lookup [fetch logs 
-| filter log.source == "Unguard Job Service Provider" AND state == "finished"], sourceField:jobid, lookupField:jobid, prefix:"finished." 
+| filter state == "finished"], sourceField:jobid, lookupField:jobid, prefix:"finished." 
 | filter isNull (finished.timestamp)
 ```
  
@@ -105,7 +105,7 @@ For this example let us edit our tile by clicking on the pencil icon.
 
 ![Edit Dashboard Tile](../../assets/images/EditDashboardTile.png)
 
-4. Simply add the **summarize** command to the existing query to get the count for the stuck jobs  
+4. You'll notice our tile specific segment and timeframe are maintained from the notebook section. Simply add the **summarize** command to the existing query to get the count for the stuck jobs  
 
 ![Summarize Tile](../../assets/images/SummarizeTile.png)
 
@@ -113,9 +113,9 @@ Here is the full query if you want to copy and paste.
 
 ```DQL
 fetch logs  
-| filter log.source == "Unguard Job Service Provider" AND state ==  "started" 
+| filter state ==  "started" 
 | lookup [fetch logs 
-| filter log.source == "Unguard Job Service Provider" AND state == "finished"], sourceField:jobid, lookupField:jobid, prefix:"finished." 
+| filter state == "finished"], sourceField:jobid, lookupField:jobid, prefix:"finished." 
 | filter isNull (finished.timestamp)
 | filter category == "payments"
 | summarize count()
@@ -138,97 +138,73 @@ We can beautify it and make it more readable by changing visualizations and add 
 
 ![Threshold Visualization](../../assets/images/ThesholdVisualization.png)
 
-### Step 3:  Creating an alert for our datapoint
-To create alerts we need to use the “*Workflows*” app.
+### Step 3:  Creating a problem event for our datapoint
+To create a problem event we will use the Davis Anomaly Detector App. Notifications of problem events can be accomplished through existing alerting profile and problem notification configurations OR simple workflows. For this exercise we'll combine the Davis Anomaly Detector Event with a simple workflow to send an email. 
 
-1. As we have already learned how to open any app, use the search function to find and open “**Workflows**”
-2. Once you open the app create a new workflow by clicking the “**+**” button and rename it to "**Stuck Payment Jobs**"
+Davis Anomaly Detectors can be developed and visualized directly within dashboards & notebooks. Then we'll open our query directly into the Davis Anomaly Detection App. 
 
-![Create Workflow](../../assets/images/CreateWorkflow.png)
+1. First we must modify the query to create a timeseries of stuck jobs. Use the **elipses (3 dots)** in the top menu and select the Duplicate option for the stuck jobs tile. 
 
-3. We need to first create a trigger that will invoke the workflow. For this example we will use the **fixed/On-demand trigger**.
-4. Once we create a trigger we have to add tasks to it. Click on the “**+**” icon the trigger to add a task to it.  
+2. Modify the DQL query by changing the `summarize` command to `makeTimeseries`. We'll assign the timeseries to a field labled **Stuck Jobs**
 
-![Create DQL Task](../../assets/images/CreateDQLTask.png)
-
-5. In the following panel, select “**Execute DQL Query**” as the action and rename it to:  ```find_stuck_jobs```
-6. In the input section simply paste the below query. It is essentially the query we used in our notebook
+You can copy and paste the complete DQL below:
 
 ```DQL
-fetch logs //, from:now() - 7d
-| filter log.source == "Unguard Job Service Provider" AND state == "started"
-| lookup [fetch logs
-| filter log.source == "Unguard Job Service Provider" AND state == "finished"], sourceField:jobid, lookupField:jobid, prefix:"finished."
-| filter isNull(finished.timestamp)
-| sort timestamp desc
-| fieldsAdd duration = finished.timestamp - timestamp
+fetch logs  
+| filter state ==  "started" 
+| lookup [fetch logs 
+| filter state == "finished"], sourceField:jobid, lookupField:jobid, prefix:"finished." 
+| filter isNull (finished.timestamp)
 | filter category == "payments"
-| fields timestamp, content, duration, jobid
-| filter isNull(duration)
+| makeTimeseries Stuck_Jobs = count(default:0)
 ```
 
-![DQL Query Task](../../assets/images/DQLQueryTask.png)
+3. Run the query and then select **Visual** and select **Line**
 
-7. Now add the next task and select “**list issues**” under *Gitlab for Workflows*. Simply select “**logs-in-context**” project from the drop down menu for the “*Input Gitlab details*” section
+![Stuck Jobs Trend](../../assets/images/makeTimeSeriesLine.png)
 
-![Gitlabs Task](../../assets/images/GitlabsTask.png)
+Now that we've converted the sum of jobs into a trending timeseries we can simulate a Davis Anomaly Detector.
 
-8. We need to add an option to check existing issues that are already open for the corresponding stuck job. We can achieve this by creating a loop task in the Options tab. **Use the below configs**;
+4. With the tile still in the edit mode select the **Data** tab and then select **Davis AI**
 
-```
-Item variable name: item
-List: {{ result("find_stuck_jobs")["records"] }}
-Concurrency: 5
-```
+![Davis AI](../../assets/images/StuckJobDavisAI.png)
 
-![Loop Task](../../assets/images/LoopTask.png)
+5. Click the toggle to enable **Davis AI**
+6. For the analyzer select **Static threshold anomaly detection**
+7. Click the toggle to enable **Show Advanced Properties**
+8. Input the following values: `Threshold: 0`, `Alert Condition: Alert if metric is above`, `Violating Samples: 2`, `Sliding Window: 60`, `Dealerting Samples: 5` and click **Run**
 
-Next we need to create a *JS task* that will compare the issues list against the stuck jobs and retrieve all the stuck jobs that do not have an issue created in gitlab.
 
-9.	Add a new task and select “**Run Javascript**”, rename it to `stuck_jobs_without_issues` and **paste the below code** in the Input field
+![Davis Analyzer](../../assets/images/DavisAnalyzer.png)
 
-```JavaScript
-import {execution} from '@dynatrace-sdk/automation-utils';
-export default async function ({ execution_id}) {
-  const exe = await execution(execution_id);
-  const result = await exe.result("find_stuck_jobs");
-  const result1 = await exe.result("list_issues_1");
+This configuration will alert if we have 2 or more stuck jobs within a 60 minute sliding evaluation period. The results show that we have 1 problem identified when the second stuck job occured. The problem event will remain open until there 5 minutes with no violations in the 60 minute sliding window.
 
-  var resultJobIDs = [];
-  
-      for (const j in result1) {
-          if (result1[j].issues.length == 0) {
-            resultJobIDs.push(result.records[j].jobid)
-          }
-      }
-  return resultJobIDs;
-}
-```
 
-![JS Task](../../assets/images/JSTask.png)
+9.	Use the **elipses (3 dots)** in the top menu and select the **Open With** option. Choose Davis Anomaly Detection.
 
-For the final step we will create a new task that will create a new issue in gitlab for the stuck jobs.
+10.	Input a title for the new Anomaly Detector: `Unguard Stuck Jobs`
 
-10.	Add a new task and select “**Create New Issue**” from the *Gitlab for Workflows* section. In the input section **use the following values**;
+The configuration of the anomaly detector we created on the dashboard is persisted so we do not need to modify the query or parameters to the anomaly detector.
+
+![Create New Issue Task](../../assets/images/NewAnomalyDetector.png)
+
+11. Click **Create an Event Template**
+
+12.	For the event name input the following:
 
 ```
-Project: logs-in-context
-Payment Transaction Stuck for jobid: {{ _.item }}
-Description: The payment needs to be investigated and fixed
+Unguard Stuck Jobs
 ```
 
-![Create New Issue Task](../../assets/images/CreateNewIssueTask.png)
-
-11. We need to add an option to check the issues that need to be opened. We can achieve this by creating a loop task in the Options tab. **Use the below configs**;
+13. For the event description input the following:
 
 ```
-Item variable name: item
-List: {{ result("stuck_jobs_without_issues") }}
-Concurrency: 5
+Unguard has {violating_samples} Stuck Jobs in the last 60 minutes
 ```
 
-![Create New Issue Loop Task](../../assets/images/CreateNewIssueLoopTask.png)
+![Event Template](../../assets/images/EventTemplate.png)
 
-12.	Save the workflow using the “**save**” button at the top of the workflow.
+14. Click **Create**
+
 
 Now we have created our alert and all set. Try running the workflow and inspect the results.
