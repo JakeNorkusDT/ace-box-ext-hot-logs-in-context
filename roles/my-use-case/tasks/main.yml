@@ -30,8 +30,8 @@
 - include_role:
     name: monaco-v2
 
-- include_role:
-    name: app-easytrade
+- name: app-easytrade
+  include: "{{role_path}}/files/app-easytrade/tasks/main.yaml"
 
 - name: Set Easytrade Address
   set_fact:
