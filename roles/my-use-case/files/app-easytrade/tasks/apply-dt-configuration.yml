@@ -1,6 +1,6 @@
 ---
 - set_fact:
-    monaco_projects_folder: "{{ role_path }}/files/monaco/projects"
+    monaco_projects_folder: "{{ easytrade_role_path }}/files/monaco/projects"
     skip_synthetic_monitor: "true"
     monaco_projects_list: ""
 
