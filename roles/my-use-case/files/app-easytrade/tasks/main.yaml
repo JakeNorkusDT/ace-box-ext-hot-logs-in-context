@@ -2,7 +2,7 @@
 - name: Deploy EasyTrade
   kubernetes.core.helm:
     name: easytrade
-    chart_ref: "{{ role_path }}/files/helm/easytrade"
+    chart_ref: "{{ easytrade_role_path }}/files/helm/easytrade"
     release_namespace: "{{ easytrade_namespace }}"
     create_namespace: true
     wait: true
