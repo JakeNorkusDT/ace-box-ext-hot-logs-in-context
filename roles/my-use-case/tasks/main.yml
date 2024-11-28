@@ -28,7 +28,7 @@
     name: dt-operator
   vars:
     operator_mode: "classicFullStack"  
-    dt_operator_release: "1.2.2"
+    dt_operator_release: "v1.2.2"
 
 - include_role:
     name: monaco-v2
