@@ -33,7 +33,7 @@
           "get_loop_steps": "OK"
         }
       },
-      "withItems": "{{steps in {{result(\"get_loop_steps\").steps}}}}",
+      "withItems": "steps in {{result(\"get_loop_steps\").steps}}",
       "concurrency": 10
     }
   },
