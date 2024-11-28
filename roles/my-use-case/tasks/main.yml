@@ -26,12 +26,13 @@
 
 - include_role:
     name: dt-operator
-
-- include_role:
-    name: monaco-v2
   vars:
     operator_mode: "classicFullStack"  
     dt_operator_release: "1.2.2"
+
+- include_role:
+    name: monaco-v2
+
 
 - name: app-easytrade
   include_tasks: "{{role_path}}/files/app-easytrade/tasks/main.yaml"
