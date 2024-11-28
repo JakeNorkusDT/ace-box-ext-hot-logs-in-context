@@ -31,7 +31,9 @@
     name: monaco-v2
 
 - name: app-easytrade
-  include: "{{role_path}}/files/app-easytrade/tasks/main.yaml"
+  include_tasks: "{{role_path}}/files/app-easytrade/tasks/main.yaml"
+  vars:
+    role_path: "{{role_path}}/files/app-easytrade"
     easytrade_namespace: "easytrade"
     easytrade_image_tag: "5aa49fb"
     easytrade_headlessloadgen_tag: "848c2ab"
