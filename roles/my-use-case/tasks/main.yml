@@ -22,16 +22,9 @@
       #!/bin/sh
       kubectl patch deployment unguard-user-auth-service -n unguard -p '{"spec":{"template":{"spec":{"containers":[{"name":"user-auth-service","image":"dynatraceace/unguard-user-auth-service:0.6.2"}]}}}}'
 
-- include_role:
-    name: k3s
-
-- include_role:
-    name: dt-operator
-  vars:
-    operator_mode: "classicFullStack"  
-    dt_operator_release: "v1.2.2"
-    log_monitoring: "notfluentbit"
-
+- set_fact:
+    role_path_abs: "{{ role_path }}"
+    
 - include_role:
     name: monaco-v2
 
@@ -48,7 +41,7 @@
     name: monaco-v2
     tasks_from: apply-monaco
   vars:
-    monaco_manifest_path: "{{ role_path }}/files/monaco/manifest.yaml"
+    monaco_manifest_path: "{{ role_path_abs }}/files/monaco/manifest.yaml"
     monaco_project: "global"
     monaco_environment:
       DT_TENANT: "{{ dynatrace_tenant_url }}"
@@ -57,6 +50,16 @@
       DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id }}"
       DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
       DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint.rstrip('/') }}"
+
+- include_role:
+    name: k3s
+
+- include_role:
+    name: dt-operator
+  vars:
+    operator_mode: "classicFullStack"  
+    dt_operator_release: "v1.2.2"
+    log_monitoring: "notfluentbit"
 
 - name: app-easytrade
   include_tasks: "{{role_path}}/files/app-easytrade/tasks/main.yaml"
@@ -101,8 +104,6 @@
       register: auth_response_raw
     - set_fact:
         dt_oauth_access_token: "{{ auth_response_raw.json.access_token }}"
-- set_fact:
-    role_path_abs: "{{ role_path }}"
 
 - name: "Apply OpenPipeline Configuration"
   ansible.builtin.command: 'curl -X PUT "{{ extra_vars.dt_environment_url_gen3 }}/platform/openpipeline/v1/configurations/logs"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/openpipeline/config.json" '
