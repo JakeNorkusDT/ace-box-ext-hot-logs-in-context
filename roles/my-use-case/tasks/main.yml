@@ -83,7 +83,7 @@
 - name: Set Workflow Variables 2
   shell: |
     sed -i "s,EASYTRADE_ADDRESS,{{ easytrade_address }},g" "{{ role_path }}/files/monaco/workflows/security.json"
-    sed -i "s,UNGUARD_ADDRESS,{{ unguard_address }},g" "{{ role_path }}/files/monaco/workflows/security.json"
+    sed -i "s,UNGUARD_ADDRESS,{{ unguard_address }},g" "{{ role_path }}/files/monaco/workflows/unguard.json"
 
 #Generate OAuth Token
 - block:
