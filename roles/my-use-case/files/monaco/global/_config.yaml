@@ -16,3 +16,26 @@ configs:
       settings:
         schema: builtin:logmonitoring.log-storage-settings
         scope: environment
+  - id: failureDetection
+    config:
+      name: failureDetection
+      template: FailureDetection.json
+    type:
+      settings:
+        schema: builtin:failure-detection.environment.parameters
+        scope: environment
+  - id: ignoreMicroblog
+    config:
+      name: ignoreMicroblog
+      template: Microblog.json
+    type:
+      settings:
+        schema: builtin:failure-detection.environment.rules
+        scope: environment
+      parameters:
+        rule_object:
+          type: reference
+          project: global
+          configType: builtin:failure-detection.environment.parameters
+          configId: failureDetection
+          property: objectId
