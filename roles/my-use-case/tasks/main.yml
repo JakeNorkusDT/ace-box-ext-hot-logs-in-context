@@ -48,7 +48,7 @@
     name: monaco-v2
     tasks_from: apply-monaco
   vars:
-    monaco_manifest_path: "{{ role_path_abs }}/files/monaco/manifest.yaml"
+    monaco_manifest_path: "{{ role_path }}/files/monaco/manifest.yaml"
     monaco_project: "global"
     monaco_environment:
       DT_TENANT: "{{ dynatrace_tenant_url }}"
