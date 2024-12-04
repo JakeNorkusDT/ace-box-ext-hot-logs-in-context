@@ -6,7 +6,7 @@
       "action": "dynatrace.automations:run-javascript",
       "description": "Build a custom task running js Code",
       "input": {
-        "script": "// optional import of sdk modules\nimport { execution } from '@dynatrace-sdk/automation-utils';\n\nexport default async function ({ executionId }) {\n  let response = await fetch(\"https://unguard.e92b3259-477c-4751-b4d7-50d11dabbe63.dynatrace.training/ui/login\", {\n    \"body\": \"username=1234&password=1234&login=\",\n    \"headers\": {\n        \"Content-Type\": \"application/x-www-form-urlencoded\",\n    },\n    \"method\": \"POST\",\n});\n  return await response.status;\n}"
+        "script": "// optional import of sdk modules\nimport { execution } from '@dynatrace-sdk/automation-utils';\n\nexport default async function ({ executionId }) {\n  let response = await fetch(\"https://UNGUARD_ADDRESS/ui/login\", {\n    \"body\": \"username=1234&password=1234&login=\",\n    \"headers\": {\n        \"Content-Type\": \"application/x-www-form-urlencoded\",\n    },\n    \"method\": \"POST\",\n});\n  return await response.status;\n}"
       },
       "position": {
         "x": 0,
