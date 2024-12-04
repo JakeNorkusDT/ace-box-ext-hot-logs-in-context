@@ -1,0 +1,17 @@
+{
+        "name": "Microblog Rule",
+        "enabled": true,
+        "parameterId": "vu9U3hXa3q0AAAABADBidWlsdGluOmZhaWx1cmUtZGV0ZWN0aW9uLmVudmlyb25tZW50LnBhcmFtZXRlcnMABnRlbmFudAAGdGVuYW50ACQwNDlhOWUwNy00Njg3LTNjNjMtYTE5My01MDc5ZmFhOTk2MGG-71TeFdrerQ",
+        "conditions": [
+          {
+            "attribute": "SERVICE_NAME",
+            "predicate": {
+              "predicateType": "CONTAINS",
+              "textValues": [
+                "MicroblogController"
+              ],
+              "caseSensitive": false
+            }
+          }
+        ]
+      }
