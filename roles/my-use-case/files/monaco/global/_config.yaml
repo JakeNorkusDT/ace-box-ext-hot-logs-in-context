@@ -34,7 +34,7 @@ configs:
           project: global
           configType: builtin:failure-detection.environment.parameters
           configId: failureDetection
-          property: objectId
+          property: id
     type:
       settings:
         schema: builtin:failure-detection.environment.rules
