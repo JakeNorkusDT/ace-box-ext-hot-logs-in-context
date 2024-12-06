@@ -57,8 +57,8 @@
 - include_role:
     name: dt-operator
   vars:
-    operator_mode: "classicFullStack"  
-    dt_operator_release: "v1.2.2"
+    operator_mode: "cloudNativeFullStack"  
+    dt_operator_release: "v1.4.0"
     log_monitoring: "notfluentbit"
 
 - name: app-easytrade
