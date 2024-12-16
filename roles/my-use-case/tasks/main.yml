@@ -158,7 +158,7 @@
 - include_role:
     name: dashboard
 
-# - name: Start Issue Generation
-#  become: true
-#  become_user: root
-#  ansible.builtin.command: '/home/{{ ace_box_user }}/start_issue.sh'
+- name: Start Issue Generation
+  become: true
+  become_user: root
+  ansible.builtin.command: '/home/{{ ace_box_user }}/start_issue.sh'
