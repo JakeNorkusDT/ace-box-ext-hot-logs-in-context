@@ -54,12 +54,12 @@
 - include_role:
     name: k3s
 
-- include_role:
-    name: dt-operator
-  vars:
-    operator_mode: "cloudNativeFullStack"  
-    dt_operator_release: "v1.3.2"
-    log_monitoring: "notfluentbit"
+# - include_role:
+#    name: dt-operator
+#  vars:
+#    operator_mode: "cloudNativeFullStack"  
+#    dt_operator_release: "v1.3.2"
+#    log_monitoring: "notfluentbit"
 
 - name: app-easytrade
   include_tasks: "{{role_path}}/files/app-easytrade/tasks/main.yaml"
