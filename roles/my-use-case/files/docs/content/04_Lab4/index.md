@@ -3,7 +3,7 @@
 ### Preparation/Context 
  
 1.	In your Dynatrace environment, navigate to the **Workflows app**. 
-2.	Open and run the **Get Rich workflow**. 
+2.	Open and run the **Security Lab Workflow**. 
  
 This workflow empties the *EasyTrade* accounts for a few select customers.   
 
