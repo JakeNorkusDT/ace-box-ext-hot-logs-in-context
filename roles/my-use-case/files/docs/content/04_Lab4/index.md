@@ -33,9 +33,9 @@ fetch logs
 
 This provides us with relevant log records in the selected timeframe. These results (thanks to the fields portion of the command) limit the resulting fields shown to those we are interested in. 
  
-Notice that after running our query, the query tree now includes a *node – Query#1*. We will further explore how to manage these later. 
+Notice that after running our query, the **query tree** on the top right side, now includes a *node – Query#1*. We will further explore how to manage these later. 
 
-Additionally, note the evidence collection section on the botom right side. This allows us to track interesting data as we come across it during our investigation. We will make use of this later as well. 
+Additionally, note the **evidence collection** section on the bottom right side. This allows us to track interesting data as we come across it during our investigation. We will make use of this later as well. 
 
 5.	Since we know that money has been taken out of accounts, we want to investigate log records related to *withdrawal transactions*. Scroll to the right until actionType column is visible. Look through records for one with the actionType value **withdraw**. Right click on the field and select “**Filter for**” and run the query.
  
@@ -59,11 +59,11 @@ We can calculate the remaining balance for each transaction by adding the follow
 
 8.	Re-run **the query**. We now see suspicious transactions matching the criteria given before. Let’s keep track of this by renaming the corresponding node in the query tree to **Suspicious transactions**. Right-click the node and select **Rename** 
  
-![Renaming as Suspicious Transactions](../../assets/images/RenameSuspicousTransaction.png)
+![Renaming as Suspicious Transactions](../../assets/images/RenameSuspicousTransaction_new.png)
 
 We can additionally change the color of the node to highlight it as an important part or finding in our investigation process: 
 
-![Change Color of Important Node](../../assets/images/ChangeColorNode.png)
+![Change Color of Important Node](../../assets/images/ChangeColorNode_new.png)
 
 9.	We must do further investigation to understand who withdrew the money and understand where it went, for each of these accounts that we discovered. There are several ways to approach this.  
  
