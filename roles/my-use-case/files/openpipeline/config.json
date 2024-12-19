@@ -1,7 +1,7 @@
 {
   "id": "logs",
   "editable": true,
-  "version": "1725395973573-5f69ac85af98bfb9",
+  "version": "1734617311044-783357eff2ea905b",
   "customBasePath": "/platform/ingest/custom/logs",
   "endpoints": [
     {
@@ -179,6 +179,26 @@
             "matcher": "matchesValue(content, \"*Adding balance history with data*\")",
             "sampleData": null,
             "dqlScript": "parse content, \"\"\"data JSON:balance\"\"\"\n| fieldsAdd valueChange = balance[ValueChange], actionType = balance[ActionType], accountId = balance[AccountId], oldValue = balance[OldValue]"
+          },
+          {
+            "type": "dql",
+            "enabled": true,
+            "editable": true,
+            "id": "processor_Add_AccountId_7793",
+            "description": "Add AccountId",
+            "matcher": "matchesValue(content, \"*Withdrawing money with data*\")",
+            "sampleData": null,
+            "dqlScript": "parse content, \"data JSON:AId\"\n| fieldsAdd accountId = AId[AccountId]"
+          },
+          {
+            "type": "dql",
+            "enabled": true,
+            "editable": true,
+            "id": "processor_Id_to_accountId_1556",
+            "description": "Id to accountId",
+            "matcher": "matchesValue(content, \"*Updating account with data*\")",
+            "sampleData": null,
+            "dqlScript": "parse content, \"data JSON:Id\"\n| fieldsAdd accountId = Id[Id]"
           }
         ]
       }
