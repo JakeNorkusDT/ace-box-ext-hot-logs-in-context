@@ -4,6 +4,7 @@
   shell: |
     sed -i "s/ACTOR_ID/{{ extra_vars.workflow_actor_id }}/g" "{{ role_path }}/files/monaco/workflows/business.json"
     sed -i "s/ACTOR_ID/{{ extra_vars.workflow_actor_id }}/g" "{{ role_path }}/files/monaco/workflows/security.json"
+    sed -i "s/ACTOR_ID/{{ extra_vars.workflow_actor_id }}/g" "{{ role_path }}/files/monaco/workflows/unguard.json"
 
 - name: Create Issue Script
   copy:
@@ -21,25 +22,68 @@
       #!/bin/sh
       kubectl patch deployment unguard-user-auth-service -n unguard -p '{"spec":{"template":{"spec":{"containers":[{"name":"user-auth-service","image":"dynatraceace/unguard-user-auth-service:0.6.2"}]}}}}'
 
+- set_fact:
+    role_path_abs: "{{ role_path }}"
+    
+- include_role:
+    name: monaco-v2
+
+- name: Monaco Debugging 1
+  ansible.builtin.debug:
+    var: extra_vars.dt_environment_url_gen3
+
+- name: Monaco Debugging 2
+  ansible.builtin.debug:
+    var: extra_vars.dt_oauth_client_id
+
+- name: Monaco - Deploy Base Config
+  include_role:
+    name: monaco-v2
+    tasks_from: apply-monaco
+  vars:
+    monaco_manifest_path: "{{ role_path_abs }}/files/monaco/manifest.yaml"
+    monaco_project: "global"
+    monaco_environment:
+      DT_TENANT: "{{ dynatrace_tenant_url }}"
+      DT_API_TOKEN: "{{ dynatrace_api_token }}"
+      DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3 }}"
+      DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id }}"
+      DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
+      DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint.rstrip('/') }}"
+
 - include_role:
     name: k3s
 
 - include_role:
     name: dt-operator
+  vars:
+    operator_mode: "classicFullStack"  
+    dt_operator_release: "v1.3.2"
+    log_monitoring: "notfluentbit"
+
+- name: app-easytrade
+  include_tasks: "{{role_path}}/files/app-easytrade/tasks/main.yaml"
+  vars:
+    easytrade_role_path: "{{role_path}}/files/app-easytrade"
+    easytrade_namespace: "easytrade"
+    easytrade_image_tag: "5aa49fb"
+    easytrade_headlessloadgen_tag: "848c2ab"
+    easytrade_domain: "easytrade.{{ ingress_domain }}"
+    easytrade_addDashboardLink: true
+    easytrade_addDashboardPreview: true
 
 - include_role:
-    name: monaco-v2
+    name: app-unguard
 
-- include_role:
-    name: app-easytrade
-
-- name: Set Easytrade Address
+- name: Set App Address facts
   set_fact:
     easytrade_address: "{{ ingress_protocol }}://easytrade.{{ ingress_domain }}"
+    unguard_address: "{{ ingress_protocol }}://unguard.{{ ingress_domain }}"
 
 - name: Set Workflow Variables 2
   shell: |
     sed -i "s,EASYTRADE_ADDRESS,{{ easytrade_address }},g" "{{ role_path }}/files/monaco/workflows/security.json"
+    sed -i "s,UNGUARD_ADDRESS,{{ unguard_address }},g" "{{ role_path }}/files/monaco/workflows/unguard.json"
 
 #Generate OAuth Token
 - block:
@@ -60,8 +104,6 @@
       register: auth_response_raw
     - set_fact:
         dt_oauth_access_token: "{{ auth_response_raw.json.access_token }}"
-- set_fact:
-    role_path_abs: "{{ role_path }}"
 
 - name: "Apply OpenPipeline Configuration"
   ansible.builtin.command: 'curl -X PUT "{{ extra_vars.dt_environment_url_gen3 }}/platform/openpipeline/v1/configurations/logs"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/openpipeline/config.json" '
@@ -87,6 +129,14 @@
   ansible.builtin.debug:
     var: post_workflow_result_2
 
+- name: Apply Workflow 3
+  ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/automation/v1/workflows?adminAccess=false"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/workflows/unguard.json" '
+  register: post_workflow_result_3
+
+- name: Workflow 3 Result
+  ansible.builtin.debug:
+    var: post_workflow_result_3
+
 - name: "Install app {{ item.dt_app_id }}"
   ansible.builtin.uri:
     url: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') }}/platform/app-engine/registry/v1/apps/{{ item.dt_app_id }}:install-bundle"
@@ -99,35 +149,6 @@
       dt_app_Version: "1.3.1"
     - dt_app_id: "dynatrace.email"
       dt_app_Version: "1.0.3"
-
-- name: Monaco Debugging 1
-  ansible.builtin.debug:
-    var: extra_vars.dt_environment_url_gen3
-
-- name: Monaco Debugging 2
-  ansible.builtin.debug:
-    var: extra_vars.dt_oauth_client_id
-
-- name: Monaco - Deploy Base Config
-  include_role:
-    name: monaco-v2
-    tasks_from: apply-monaco
-  vars:
-    monaco_manifest_path: "{{ role_path_abs }}/files/monaco/manifest.yaml"
-    monaco_project: "global"
-    monaco_environment:
-      WORKFLOW_ACTOR_ID: "{{ extra_vars.workflow_actor_id }}"
-      EASYTRADE_ADDRESS: "{{ ingress_protocol }}://easytrade.{{ ingress_domain }}"
-      DT_TENANT: "{{ dynatrace_tenant_url }}"
-      DT_API_TOKEN: "{{ dynatrace_api_token }}"
-      DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3 }}"
-      DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id }}"
-      DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
-      DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint.rstrip('/') }}"
-
-
-- include_role:
-    name: app-unguard
 
 # - set_fact:
 #     include_dashboard_value_file: "{{ role_path }}/templates/apps-dashboard.yml.j2"
