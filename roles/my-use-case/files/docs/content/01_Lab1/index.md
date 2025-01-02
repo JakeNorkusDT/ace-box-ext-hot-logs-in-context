@@ -34,7 +34,7 @@ There are multiple apps at your disposal for viewing/analyzing logs. For initial
 
 1. Use the **search function** at the top left of the sidebar and search for the “**Logs**” app  
 
-![Logs App](../../assets/images/LogsApp.png)
+![Logs App](../../assets/images/01_open_logs.png)
 
 2. With logs app open, set the timeframe to “**last 2 hours**” to match our problem timeframe
 3. Click on **Run Query** to view all the logs for the last 2 hours
@@ -49,10 +49,10 @@ Now we can see all the error logs related to login for the selected timeframe, b
 
 By default, the logs app shows a few basic filters and most common columns, but you can add a column for any of the available *properties* that you desire and add a filter for it.
 
-7. Click on “**xx columns hidden**” to reveal all available columns. Select "**dt.host.name**" and “**k8s.deployment.name**”. Click on **confirm** to add them to the analysis view
+7. Click on “**xx columns hidden**” to reveal all available columns. Select "**k8s.cluster.name**" and “**k8s.deployment.name**”. Click on **confirm** to add them to the analysis view
 8. Now click on **any log line** to view the log contents and all the metadata for it. In this screen you can use any of the metadata to filter the result. Look for *k8s.deployment.name* and click on the **filter icon** next to it and add it as filter.  
 
-![Log MetaData](../../assets/images/LogDetails.png)
+![Log MetaData](../../assets/images/01_add_filter.png)
 
 So far, we've been interacting with the UI in a really simple way without the need for extensive querying knowledge. What's behind each of these queries? It is written using *Dynatrace Query Language*, also known as *DQL*. 
 
@@ -61,7 +61,9 @@ We have narrowed down on the problem and filtered the relevant logs, but how can
 ### Step 3: Storing, visualizing and sharing log analysis
 1. Click on the “**open with**” button to use this data with another app within Dynatrace. In the subsequent screen select “**Notebooks**”
 
-![Open With](../../assets/images/OpenWith.png)
+![Open With](../../assets/images/01_open_with_expanded.png)
+![Open With](../../assets/images/01_open_with.png)
+![Open With](../../assets/images/01_new_notebook.png)
 ![Notebooks](../../assets/images/Notebooks.png)
 
 What we've done so far would basically correspond to a DQL query that we can see here within the *notebook* (analyze it).
