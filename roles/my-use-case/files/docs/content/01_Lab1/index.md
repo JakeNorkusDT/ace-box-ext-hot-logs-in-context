@@ -1,15 +1,20 @@
 ## Lab 1: Getting Started with Logs
  
-### The goal of this lab is to:
-- Show you how to troubleshoot basic issues
-- Use Logs to explore the issue further, eventually checking if it has been solved
+### What will this lab focus on?
+This is an entry-level lab to get started with the basics of Logs in Dynatrace. In this lab we will get started with navigating in the Dynatrace UI, use the Problems App and the Logs app to create basic log queries.
 
-### What will participants be able to do after completion of this lab? 
+### Lab Objective
 Participants will be first able to navigate within Dynatrace UI, identifying a problem in a simple and easy way. Then they will be able to drill down and understand:  
 - the **overall impact** of the problem  
 - what’s the exact **root cause**   
 - pinpoint the **logs** that are strictly related to that issue.   
 - go through further analysis exploring the logs, checking and querying the **logs in the same context of the problem**. It’s important to show how we can analyze logs content, and get value out of logs (**WITHOUT DQL**, and then drill down using *DQL* (within *Notebooks* and/or *Dashboards*))
+
+### Lab Scenario
+A problem has been generated that makes it very difficult for users to login to the Unguard app. We will use Dynatrace to analyze this problem.
+
+### Why is knowing/doing this important? 
+The Logs App allows you to easily find relevant logs for your applications and can serve as a basis of further analysis. It also allows you to query your logs without using DQL (Dynatrace Query Language).
 
 ### Step 1: Finding and viewing a problem
 1. Access your **Dynatrace tenant** provided for the lab
