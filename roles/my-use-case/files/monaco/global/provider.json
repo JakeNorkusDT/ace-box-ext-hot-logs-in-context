@@ -1,23 +1,15 @@
 {
-  "uid": "MIJm6Px7k8F",
   "name": "Provider",
   "variables": {
     "type": "query",
     "value": "data record(value=\"Unguard\")"
   },
   "isPublic": true,
-  "owner": "9062fe0d-a0d8-46e1-b888-ad7e980cc2f5",
-  "allowedOperations": [
-    "READ",
-    "WRITE",
-    "DELETE"
-  ],
   "includes": [
     {
       "filter": "{\"type\":\"Group\",\"range\":{\"from\":0,\"to\":43},\"logicalOperator\":\"AND\",\"explicit\":false,\"children\":[{\"type\":\"Statement\",\"range\":{\"from\":0,\"to\":43},\"key\":{\"type\":\"Key\",\"textValue\":\"log.source\",\"value\":\"log.source\",\"range\":{\"from\":0,\"to\":10}},\"operator\":{\"type\":\"ComparisonOperator\",\"textValue\":\"=\",\"value\":\"=\",\"range\":{\"from\":11,\"to\":12}},\"value\":{\"type\":\"String\",\"textValue\":\"\\\"Unguard Job Service Provider\\\"\",\"value\":\"Unguard Job Service Provider\",\"isEscaped\":true,\"range\":{\"from\":13,\"to\":43}}}]}",
       "dataObject": "logs",
       "applyTo": []
     }
-  ],
-  "version": 2
+  ]
 }
