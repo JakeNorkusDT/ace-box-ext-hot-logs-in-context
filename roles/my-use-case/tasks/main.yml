@@ -145,6 +145,30 @@
   ansible.builtin.debug:
     var: post_segment_result_1
 
+- name: Apply Segment 2
+  ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/storage/filter-segments/v1/filter-segments"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/global/k8scontainer.json" '
+  register: post_segment_result_1
+
+- name: Segment 2 Result
+  ansible.builtin.debug:
+    var: post_segment_result_1
+
+- name: Apply Segment 3
+  ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/storage/filter-segments/v1/filter-segments"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/global/k8scluster.json" '
+  register: post_segment_result_1
+
+- name: Segment 3 Result
+  ansible.builtin.debug:
+    var: post_segment_result_1
+
+- name: Apply Segment 4
+  ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/storage/filter-segments/v1/filter-segments"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/global/k8snamespace.json" '
+  register: post_segment_result_1
+
+- name: Segment 4 Result
+  ansible.builtin.debug:
+    var: post_segment_result_1
+
 - name: "Install app {{ item.dt_app_id }}"
   ansible.builtin.uri:
     url: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') }}/platform/app-engine/registry/v1/apps/{{ item.dt_app_id }}:install-bundle"
