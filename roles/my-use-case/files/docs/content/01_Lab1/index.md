@@ -20,12 +20,12 @@ The Logs App allows you to easily find relevant logs for your applications and c
 1. Access your **Dynatrace tenant** provided for the lab
 2. Open the “**Problems**” app by clicking on it from the sidebar or by using the search function available at the top left.
 
-![Problems](../../assets/images/Problems.png)
+![Problems](../../assets/images/01_open_problem.png)
 
 3. Within the problems app screen you will be able to see a list of **open**/**closed** **problems**
 4. For the lab we will select a particular problem of “**Failure rate increase**”. Click on the **problem ID** to open the details of that problem.  
 
-![Failure Rate Problem Card](../../assets/images/FailureRateIncrease.png)
+![Failure Rate Problem Card](../../assets/images/01_problem.png)
 
 5. Click on **properties** to view additional metadata for the selected entity
 
