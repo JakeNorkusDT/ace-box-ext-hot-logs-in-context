@@ -64,7 +64,6 @@ We have narrowed down on the problem and filtered the relevant logs, but how can
 ![Open With](../../assets/images/01_open_with_expanded.png)
 ![Open With](../../assets/images/01_open_with.png)
 ![Open With](../../assets/images/01_new_notebook.png)
-![Notebooks](../../assets/images/Notebooks.png)
 
 What we've done so far would basically correspond to a DQL query that we can see here within the *notebook* (analyze it).
  
