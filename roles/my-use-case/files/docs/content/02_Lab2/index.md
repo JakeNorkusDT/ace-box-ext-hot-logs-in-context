@@ -66,8 +66,7 @@ For this step, we would need to write a couple of DQL queries. To do this open a
 ```DQL
 fetch logs  
 | filter state ==  "started" 
-| lookup [fetch logs 
-| filter state == "finished"], sourceField:jobid, lookupField:jobid, prefix:"finished." 
+| lookup [fetch logs | filter state == "finished"], sourceField:jobid, lookupField:jobid, prefix:"finished." 
 | filter isNull (finished.timestamp)
 ```
  
@@ -139,11 +138,24 @@ We can beautify it and make it more readable by changing visualizations and add 
 ![Threshold Visualization](../../assets/images/ThesholdVisualization.png)
 
 ### Step 3:  Creating a problem event for our datapoint
-To create a problem event we will use the Davis Anomaly Detector App. Notifications of problem events can be accomplished through existing alerting profile and problem notification configurations OR simple workflows. For this exercise we'll combine the Davis Anomaly Detector Event with a simple workflow to send an email. 
+To create a problem event we will use the Davis Anomaly Detector App. Notifications of problem events can be accomplished through existing alerting profiles and problem notification configurations OR simple workflows. For this exercise we'll combine the Davis Anomaly Detector Event with a simple workflow to send an email. 
+
+When using the Davis Anomaly Detector App for the first time we have a one time prerequisit to enable user permissions on the App. Please follow the following steps to enable the permissions:
+
+1. Open the Apps panel from the left hand navigation menu and select **Davis Anomaly Detection.**
+
+![Davis Anomaly Detection](../../assets/images/Dadapp.png)
+
+2. In the top right corner of the app select **Settings** and **Authorization Settings.** Then click the **Select All** button and save the changes.
+
+![Davis Auth Settings](../../assets/images/DaDAuthSettings.png)
+
+3. Return to your dashboard by opening the Dashboards App.
+
 
 Davis Anomaly Detectors can be developed and visualized directly within dashboards & notebooks. Then we'll open our query directly into the Davis Anomaly Detection App. 
 
-1. First we must modify the query to create a timeseries of stuck jobs. Use the **elipses (3 dots)** in the top menu and select the Duplicate option for the stuck jobs tile. 
+1. First we must modify the query to create a timeseries of stuck jobs. Select the tile and choose the Duplicate option. 
 
 2. Modify the DQL query by changing the `summarize` command to `makeTimeseries`. We'll assign the timeseries to a field labled **Stuck Jobs**
 
@@ -156,7 +168,7 @@ fetch logs
 | filter state == "finished"], sourceField:jobid, lookupField:jobid, prefix:"finished." 
 | filter isNull (finished.timestamp)
 | filter category == "payments"
-| makeTimeseries Stuck_Jobs = count(default:0)
+| makeTimeseries Stuck_Jobs = count(default:0), interval:1m
 ```
 
 3. Run the query and then select **Visual** and select **Line**
@@ -172,7 +184,7 @@ Now that we've converted the sum of jobs into a trending timeseries we can simul
 5. Click the toggle to enable **Davis AI**
 6. For the analyzer select **Static threshold anomaly detection**
 7. Click the toggle to enable **Show Advanced Properties**
-8. Input the following values: `Threshold: 0`, `Alert Condition: Alert if metric is above`, `Violating Samples: 2`, `Sliding Window: 60`, `Dealerting Samples: 5` and click **Run**
+8. Input the following values: `Threshold: 0`, `Alert Condition: Alert if metric is above`, `Violating Samples: 2`, `Sliding Window: 5`, `Dealerting Samples: 5` and click **Run**
 
 
 ![Davis Analyzer](../../assets/images/DavisAnalyzer.png)
@@ -206,5 +218,45 @@ Unguard has {violating_samples} Stuck Jobs in the last 60 minutes
 
 14. Click **Create**
 
+15. After a few minutes, refresh the screen and you should see the status of the new anomaly detector is **Success.**
 
-Now we have created our alert and all set. Try running the workflow and inspect the results.
+### Step 4: Create a workflow to notify on Unguard Stuck Jobs
+
+Workflows are a very flexible way to automate any kind of task in dynatrace. For this lab we will use a simple workflow to generate an email when Unguard has triggered our stuck jobs Anomaly Detector. Since this is our first time running workflows, we'll have to enable user permissions to execute them before we can create our notification.
+
+1. Using the left hand navigation, open the **Workflows App**
+2. In the top right corner of the workflows app, select the **Settings** drop down and choose **Authorization Settings.**
+
+![Workflow Auth](../../assets/images/WorkflowAuth.png)
+
+
+3. Enable all permissions and click **Save.**
+
+![Workflow Permissions](../../assets/images/workflowpermissions.png)
+
+4. To exit the workflow app settings, click the workflows button in the top left corner. Then click **+ Workflow** to create a new workflow.
+5. Give the workflow a name called `Unguard Stuck Jobs` and for the first trigger select **Davis Problem Trigger.**
+6. Set event state = `Active`, event category = `Custom`, Affected Entities = `include all entities`, expand Additional custom filter query and paste the following filter: `event.name == "Unguard Stuck Jobs"`
+
+![Event Trigger](../../assets/images/Davis%20Problem%20Trigger%20Config.png)
+
+7. Add a new task to our workflow by selecting the **+** icon from the problem trigger. Search for `email` and select the **Send Email** task type.
+
+![Workflow Email](../../assets/images/workflowemailtask.png)
+
+8. Change the name of the task to `send_email`. Then configure the email task by populating the following inputs: **To:**, **Subject:**, and **Message:** inputs. 
+
+For the message input you can copy:
+
+```
+The Unguard payments job is stuck.
+
+View the dynatrace problem here: {{ environment().url }}/ui/apps/dynatrace.davis.problems/problem/{{ event()["event.id"]}}
+
+```
+
+![Workflow Email](../../assets/images/workflowemail.png)
+
+*Note*: If you'd rather not use a live email address, you may input anything here with a valid format. You can also explore other task options to understand more scenarios that are possible other than email. 
+
+Now we have created our alert and all set. Save and try running the workflow and inspect the results.
