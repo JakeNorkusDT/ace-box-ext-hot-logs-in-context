@@ -75,6 +75,11 @@
 - include_role:
     name: app-unguard
 
+- name: Remove unguard CRON job
+  become: true
+  become_user: root
+  ansible.builtin.command: 'kubectl delete cronjob -n unguard unguard-user-simulator'
+
 - name: Set App Address facts
   set_fact:
     easytrade_address: "{{ ingress_protocol }}://easytrade.{{ ingress_domain }}"
