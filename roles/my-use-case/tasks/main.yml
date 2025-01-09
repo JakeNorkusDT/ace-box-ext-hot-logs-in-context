@@ -122,38 +122,42 @@
   ansible.builtin.uri:
     url: "{{ extra_vars.dt_environment_url_gen3 }}/platform/automation/v1/workflows?adminAccess=false"
     method: POST
-    src: "{{ role_path_abs }}/files/monaco/workflows/business.json"
+    src: "{{ role_path_abs }}/files/monaco/workflows/ {{ item.fileName }}"
     headers:
       Content-Type: "application/json; charset=utf-8"
       Authorization: "Bearer {{ dt_oauth_access_token }}"
   register: _result
   until: _result.status == 201
   retries: 10 
-  delay: 30 
+  delay: 30
+  loop:
+    - fileName: "business.json"
+    - fileName: "security.json"
+    - fileName: "unguarded.json"
 
 # - name: Apply Workflow 1
 #  ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/automation/v1/workflows?adminAccess=false"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/workflows/business.json" '
 #  register: post_workflow_result_1
 
-- name: Workflow 1 Result
-  ansible.builtin.debug:
-    var: post_workflow_result_1
+# - name: Workflow 1 Result
+#  ansible.builtin.debug:
+#    var: post_workflow_result_1
 
-- name: Apply Workflow 2
-  ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/automation/v1/workflows?adminAccess=false"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/workflows/security.json" '
-  register: post_workflow_result_2
+# - name: Apply Workflow 2
+#  ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/automation/v1/workflows?adminAccess=false"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/workflows/security.json" '
+#  register: post_workflow_result_2
 
-- name: Workflow 2 Result
-  ansible.builtin.debug:
-    var: post_workflow_result_2
+# - name: Workflow 2 Result
+#  ansible.builtin.debug:
+#    var: post_workflow_result_2
 
-- name: Apply Workflow 3
-  ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/automation/v1/workflows?adminAccess=false"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/workflows/unguard.json" '
-  register: post_workflow_result_3
+# - name: Apply Workflow 3
+#  ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/automation/v1/workflows?adminAccess=false"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/workflows/unguard.json" '
+#  register: post_workflow_result_3
 
-- name: Workflow 3 Result
-  ansible.builtin.debug:
-    var: post_workflow_result_3
+# - name: Workflow 3 Result
+#  ansible.builtin.debug:
+#    var: post_workflow_result_3
 
 - name: Apply Segment 1
   ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/storage/filter-segments/v1/filter-segments"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/global/provider.json" '
