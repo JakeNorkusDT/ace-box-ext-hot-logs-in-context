@@ -119,8 +119,21 @@
     var: post_result
 
 - name: Apply Workflow 1
-  ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/automation/v1/workflows?adminAccess=false"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/workflows/business.json" '
-  register: post_workflow_result_1
+  ansible.builtin.uri:
+    url: "{{ extra_vars.dt_environment_url_gen3 }}/platform/automation/v1/workflows?adminAccess=false"
+    method: POST
+    src: "{{ role_path_abs }}/files/monaco/workflows/business.json"
+    headers:
+      Content-Type: "application/json; charset=utf-8"
+      Authorization: "Bearer {{ dt_oauth_access_token }}"
+  register: _result
+  until: _result.status == 201
+  retries: 10 
+  delay: 30 
+
+# - name: Apply Workflow 1
+#  ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/automation/v1/workflows?adminAccess=false"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/workflows/business.json" '
+#  register: post_workflow_result_1
 
 - name: Workflow 1 Result
   ansible.builtin.debug:
