@@ -131,17 +131,17 @@
       Content-Type: "application/json; charset=utf-8"
       Authorization: "Bearer {{ dt_oauth_access_token }}"
   register: _result
-#  until: _result.status == 201
+  until: _result.status == 201
   retries: 10 
   delay: 30
   loop:
     - fileName: "business.json"
     - fileName: "security.json"
-    - fileName: "unguarded.json"
+    - fileName: "unguard.json"
 
-- name: Workflow X Result
-  ansible.builtin.debug:
-    var: _result
+# - name: Workflow X Result
+#  ansible.builtin.debug:
+#    var: _result
 
 # - name: Apply Workflow 1
 #  ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/automation/v1/workflows?adminAccess=false"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/workflows/business.json" '
