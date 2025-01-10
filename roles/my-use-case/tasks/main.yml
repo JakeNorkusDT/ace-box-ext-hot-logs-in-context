@@ -126,6 +126,7 @@
   ansible.builtin.uri:
     url: "{{ extra_vars.dt_environment_url_gen3 }}/platform/automation/v1/workflows?adminAccess=false"
     method: POST
+    status_code: 201
     src: "{{ role_path_abs }}/files/monaco/workflows/{{ item.fileName }}"
     headers:
       Content-Type: "application/json; charset=utf-8"
