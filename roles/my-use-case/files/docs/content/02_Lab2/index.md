@@ -133,7 +133,7 @@ We can beautify it and make it more readable by changing visualizations and add 
 
 ![Single Value Visualization](../../assets/images/SingleValueVisualization.png)
 
-7. We can also set a threshold by clicking on the “**threshold**” tile in the same panel at the bottom. You can play around with the values and test the color coding.
+7. Create a threshold for the single value. Click on the **threshold** option at the bottom. Set the value to at least one number lower than the current number of stuck jobs to get a color change.
 
 ![Threshold Visualization](../../assets/images/ThesholdVisualization.png)
 
@@ -184,12 +184,12 @@ Now that we've converted the sum of jobs into a trending timeseries we can simul
 5. Click the toggle to enable **Davis AI**
 6. For the analyzer select **Static threshold anomaly detection**
 7. Click the toggle to enable **Show Advanced Properties**
-8. Input the following values: `Threshold: 0`, `Alert Condition: Alert if metric is above`, `Violating Samples: 2`, `Sliding Window: 5`, `Dealerting Samples: 5` and click **Run**
+8. Input the following values: `Threshold: 0`, `Alert Condition: Alert if metric is above`, `Violating Samples: 1`, `Sliding Window: 5`, `Dealerting Samples: 5` and click **Run**
 
 
 ![Davis Analyzer](../../assets/images/DavisAnalyzer.png)
 
-This configuration will alert if we have 2 or more stuck jobs within a 60 minute sliding evaluation period. The results show that we have 1 problem identified when the second stuck job occured. The problem event will remain open until there 5 minutes with no violations in the 60 minute sliding window.
+This configuration will alert if we have 1 or more stuck jobs within a 5 minute sliding evaluation period. The results show that we have 1 problem identified when the second stuck job occured. The problem event will remain open until there 5 minutes with no violations in the 5 minute sliding window.
 
 
 9.	Use the **elipses (3 dots)** in the top menu and select the **Open With** option. Choose Davis Anomaly Detection.
@@ -211,7 +211,7 @@ Unguard Stuck Jobs
 13. For the event description input the following:
 
 ```
-Unguard has {violating_samples} Stuck Jobs in the last 60 minutes
+Unguard has at least {violating_samples} Stuck Jobs in the last 5 minutes
 ```
 
 ![Event Template](../../assets/images/EventTemplate.png)
