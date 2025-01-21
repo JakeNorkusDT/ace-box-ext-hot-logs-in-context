@@ -8,6 +8,14 @@ configs:
       settings:
         schema: builtin:dt-javascript-runtime.allowed-outbound-connections
         scope: environment
+  - id: disableESM
+    config:
+      name: disableESM
+      template: disableESM.json
+    type:
+      settings:
+        schema: builtin:oneagent.features
+        scope: environment
   - id: anom-detection
     config:
       name: anom-detection
