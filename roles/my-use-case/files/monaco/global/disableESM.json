@@ -1,0 +1,5 @@
+{
+   "enabled":true,
+   "forcible":null,
+   "key":"NODEJS_AGENT_ESM_LOADERS_FORCIBLE"
+}
