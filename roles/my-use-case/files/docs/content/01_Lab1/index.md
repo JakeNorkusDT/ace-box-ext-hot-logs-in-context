@@ -29,7 +29,12 @@ The Logs App allows you to easily find relevant logs for your applications and c
 
 5. Click on **properties** to view additional metadata for the selected entity
 
+6. Finally, click the **logs** tab to view the logs in context related to this problem.
+
+![Failure Rate Problem Card](../../assets/images/01_logs_in_context.png)
+
 ### Step 2:  Selecting and analyzing relevant logs related to the problem
+
 There are multiple apps at your disposal for viewing/analyzing logs. For initial analysis we will use the **Logs app**. This app provides an *UI based approach* without the need for DQL or any sort of querying knowledge.
 
 1. Use the **search function** at the top left of the sidebar and search for the “**Logs**” app  
