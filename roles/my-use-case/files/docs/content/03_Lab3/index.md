@@ -1,4 +1,7 @@
 ## Lab 3: Business Use Case
+
+### Lab Materials
+In this lab we will work primarily out of a Notebook provided in the course materials tab in Dynatrace University. You should see 2 files, one is the working notbook and the other is an answer key. Feel free to keep the answer key open as a reference during this lab.
  
 ### What will this lab focus on? 
 In this lab we’ll use the App “*Easytrade*”, which is a trading platform App where people can buy, sell, transfer and withdraw funds. We will demonstrate for you how *Easytrade* works and the importance of observing the App to see how much money is being traded (stock market never closes here). We’ll also show you how to find logs via *Notebooks* of trades and complete an exercise in data analysis to build a business dashboard.  
@@ -67,7 +70,7 @@ fetch logs
 
 Now that we have our data selected and prepared for analysis, it’s time to review the data to answer our prescribed business-level questions.
 
-### Step 1: How many deposits were made in the last 2 hours?
+### Question 1: How many deposits were made in the last 2 hours?
 Let's answer the first question: **How many deposits were made in the last two hours?**
 
 To achieve this we need to filter the data for the deposit action and count the number of entries for the last two hours
@@ -82,7 +85,7 @@ To achieve this we need to filter the data for the deposit action and count the 
 
 With that, we have answered the first question, and know how many deposits were made in the last 2 hours.
 
-### Step 2: How many withdrawals were made in the last two hours?
+### Question 2: How many withdrawals were made in the last two hours?
 Let's move to the next question: **How many withdrawals were made in the last two hours?**
 
 1.	Let's proceed by duplicating **the current section** where we have the data for deposits.  
@@ -100,7 +103,7 @@ fetch logs
 ```
 <img width="1334" alt="image" src="https://github.com/user-attachments/assets/f9b45c91-0c8b-459c-9057-31ce73f8cf97" />
 
-### Step 3: How much money is our platform earning?
+### Question 3: How much money is our platform earning?
 
 We know that the business makes money through the transaction fee and the *actionType* related to it is “**collectfee**”. Therefore we need to filter and summarize data related to this action.
 
@@ -122,7 +125,7 @@ fetch logs
  
 Now we know that the business is making profit and how much money was earned in the last 2 hours
 
-### Step 3: Which accounts had the biggest increase / decrease?
+### Question 4: Which accounts had the biggest increase / decrease?
 
 To achieve this, we will track the *valueChange* corresponding to the *accountId* and order the resulting data in descending order.
 
@@ -148,7 +151,7 @@ fetch logs
 
 Now we can the list of accounts that had the biggest change in their balance.
 
-### Step 5: Can we predict future earnings of our platform?
+### Question 5: Can we predict future earnings of our platform?
 
 To achieve this, we need to create a *timeseries* of our *current earnings* and use this data to *forecast* future earnings.
 
@@ -185,7 +188,7 @@ Change the time frame from 100 to “**120**” to reflect the same time period 
 
 Now we have a forecast of our earnings and can see the forecast of our earnings for the next 2 hours.
 
-### Step 6: What are the top 5 accounts with the most money going out?
+### Question 6: What are the top 5 accounts with the most money going out?
 
 To achieve this we need to track *withdrawals* by account and calculate the sum of *valueChange*
 
@@ -216,7 +219,7 @@ Now we can see the top five accounts who have the most money going out in the la
 <img width="920" alt="image" src="https://github.com/user-attachments/assets/3368ab5f-8e9f-496f-bf6a-e169ffcd2e09" />
 
 
-### Step 7: How much money is traded long compared to market trades?
+### Question 7: How much money is traded long compared to market trades?
 
 To answer this question, we’re going to look at actionTypes, “sell” or “buy” transactions. 
  
@@ -258,7 +261,7 @@ fetch logs
 <img width="1352" alt="image" src="https://github.com/user-attachments/assets/7465391f-2af0-4e3e-945c-df4c962dd1db" />
 
 
-### Step 8: How much money is deposited vs withdrawn?
+### Question 8: How much money is deposited vs withdrawn?
 
 1.	Create a new section with the query created in **Step 0** and hit “**Run**”.
 ```
