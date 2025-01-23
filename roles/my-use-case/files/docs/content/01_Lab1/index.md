@@ -29,10 +29,6 @@ The Logs App allows you to easily find relevant logs for your applications and c
 
 5. Click on **properties** to view additional metadata for the selected entity
 
-6. Finally, click the **logs** tab to view the logs in context related to this problem.
-
-![Failure Rate Problem Card](../../assets/images/01_logs_in_context.png)
-
 ### Step 2:  Selecting and analyzing relevant logs related to the problem
 
 There are multiple apps at your disposal for viewing/analyzing logs. For initial analysis we will use the **Logs app**. This app provides an *UI based approach* without the need for DQL or any sort of querying knowledge.
@@ -87,7 +83,11 @@ fetch logs
 | filter k8s.namespace.name == "unguard" 
 | sort timestamp desc 
 | makeTimeseries count(), by:{status}, interval: 5m 
-``` 
+```
+
+To get the correct visualisation, there are two available options:
+1. Create a new Notebook Section and paste the query there.
+2. Click **Options** and then select the **Line** option under **Visualization**.
  
 We can analyze deeper to create more insightful reports and visualizations. *Notebooks* are a powerful tool. It is out of scope for this lab to explore all the possibilities, but we will take a sneak peak of what is possible. We are going to extract *all* the affected **user(names)** for this login issue. 
  
