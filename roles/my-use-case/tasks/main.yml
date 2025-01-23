@@ -132,6 +132,10 @@
     - fileName: "security.json"
     - fileName: "unguard.json"
 
+- name: Workflow 3 Result
+  ansible.builtin.debug:
+    var: _result
+
 - name: Apply Segment 1
   ansible.builtin.command: 'curl -X POST "{{ extra_vars.dt_environment_url_gen3 }}/platform/storage/filter-segments/v1/filter-segments"  --header "Content-Type: application/json; charset=utf-8" --header "Authorization: Bearer {{ dt_oauth_access_token }}" --data "@{{ role_path_abs }}/files/monaco/global/provider.json" '
   register: post_segment_result_1
