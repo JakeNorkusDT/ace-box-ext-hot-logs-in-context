@@ -86,8 +86,8 @@ fetch logs
 ```
 
 To get the correct visualisation, there are two available options:
-1. Create a new Notebook Section and paste the query there.
-2. Click **Options** and then select the **Line** option under **Visualization**.
+- Create a new Notebook Section and paste the query there
+- Click **Options** and then select the **Line** option under **Visualization**.
  
 We can analyze deeper to create more insightful reports and visualizations. *Notebooks* are a powerful tool. It is out of scope for this lab to explore all the possibilities, but we will take a sneak peak of what is possible. We are going to extract *all* the affected **user(names)** for this login issue. 
  
